@@ -25,7 +25,7 @@ public class ProdutoController {
                 .orElseThrow(() -> new RuntimeException("produto não cadastrado no sistema"));
     }
 
-    @PostMapping(consumes = "aplication/Json", produces = "aplication/Json")
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public Produto Salvar(@RequestBody Produto produto) {
         return repository.save(produto);
     }

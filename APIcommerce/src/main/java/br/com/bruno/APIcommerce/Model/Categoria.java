@@ -1,9 +1,8 @@
 package br.com.bruno.APIcommerce.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 
 @Entity
@@ -14,6 +13,10 @@ public class Categoria{
 
     private String nome;
     private String descricao;
+    private String imagemSimboloUrl;
+
+    @OneToMany(mappedBy = "categoria")
+    private List<Produto> produtos;
 
     public Long getId() {
         return id;
@@ -38,4 +41,17 @@ public class Categoria{
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
+    public String getImagemSimboloUrl() {
+        return imagemSimboloUrl;
+    }
+
+    public void setImagemSimboloUrl(String imagemSimboloUrl) {
+        this.imagemSimboloUrl = imagemSimboloUrl;
+    }
+
+    public List<Produto> getprodutos() {
+        return produtos;
+    }
+
 }

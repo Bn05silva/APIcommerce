@@ -1,9 +1,10 @@
 package br.com.bruno.APIcommerce.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -13,7 +14,18 @@ public class Produto{
     private Long id;
 
     private String nome;
-    private String preco;
+    private String descricao;
+    private String fotoUrl;
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime dataCadastro;
+    @UpdateTimestamp
+    private LocalDateTime dataUltimaAtualizacao;
+    private BigDecimal valorUnitario;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
 
     public Long getId() {
         return id;
@@ -31,11 +43,43 @@ public class Produto{
         this.nome = nome;
     }
 
-    public String getpreco() {
-        return preco;
+    public String getdescricao() {
+        return descricao;
     }
 
-    public void setpreco(String preco) {
-        this.preco = preco;
+    public void setdescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String getfotoUrl() {
+        return fotoUrl;
+    }
+
+    public void setfotoUrl(String fotoUrl) {
+        this.fotoUrl = fotoUrl;
+    }
+
+    public LocalDateTime getdataCadastro() {
+        return dataCadastro;
+    }
+
+    public LocalDateTime getdataUltimaAtualizacao() {
+        return dataUltimaAtualizacao;
+    }
+
+    public BigDecimal getvalorUnitario() {
+        return valorUnitario;
+    }
+
+    public void setValorUnitario(BigDecimal valorUnitario) {
+        this.valorUnitario = valorUnitario;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }
