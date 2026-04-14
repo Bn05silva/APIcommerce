@@ -6,6 +6,7 @@ import br.com.bruno.APIcommerce.Repository.CategoriaRepository;
 import br.com.bruno.APIcommerce.Repository.ProdutoRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -32,11 +33,29 @@ public class CategoriaController {
     }
 
     @GetMapping("/{id}/produtos")
-    public List<Produto> listarProdutosPorCategoria(@PathVariable Long id) {
+    public List<Produto> listarProdutosPorCategoriaNomePreco(
+            @PathVariable Long id,
+            @RequestParam (required = false) String nome,
+            @RequestParam(required = false) BigDecimal valorMinimo,
+            @RequestParam (required = false) BigDecimal valorMaximo) {
+
         Categoria categoria = categoriarepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("não hà produtos nessa categoria"));
 
-        return produtorepository.findByCategoria(categoria);
+        if (nome == null && valorMaximo == null && valorMinimo == null) {
+            return produtorepository.findByCategoria(categoria);
+        }
+
+        if (nome != null && valorMaximo == null && valorMinimo == null) {
+            return produtorepository.findByCategoriaAndNomeContaining(categoria, nome);
+        }
+
+        if (nome == null && valorMaximo != null && valorMinimo != null) {
+            return produtorepository.findByCategoriaAndValorUnitarioBetween(categoria, valorMinimo, valorMaximo);
+        }
+
+        throw new UnsupportedOperationException("Filtro indisponivel");
+
     }
 
     @GetMapping("/nome")

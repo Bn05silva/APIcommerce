@@ -4,40 +4,59 @@ import br.com.bruno.APIcommerce.Model.Produto;
 import br.com.bruno.APIcommerce.Repository.ProdutoRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
 @RequestMapping("/produtos")
 
 public class ProdutoController {
-    private final ProdutoRepository repository;
+    private final ProdutoRepository produtorepository;
 
-    public ProdutoController(ProdutoRepository repository) {
-        this.repository = repository;
+    public ProdutoController(ProdutoRepository produtorepository) {
+        this.produtorepository = produtorepository;
     }
 
     @GetMapping
-    public List<Produto> listar() {return repository.findAll();}
+    public List<Produto> listar(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) BigDecimal valorMinimo,
+            @RequestParam(required = false) BigDecimal valorMaximo) {
+
+        if (nome == null && valorMaximo == null && valorMinimo == null) {
+            return produtorepository.findAll();
+        }
+
+        if (nome != null && valorMaximo == null && valorMinimo == null) {
+            return produtorepository.findByNomeContaining(nome);
+        }
+
+        if (nome == null && valorMaximo != null && valorMinimo != null) {
+            return produtorepository.findByValorUnitarioBetween(valorMinimo, valorMaximo);
+        }
+
+        throw new UnsupportedOperationException("Filtro indisponivel");
+    }
 
     @GetMapping("/{id}")
     public Produto buscarPorId(@PathVariable Long id) {
-        return repository.findById(id)
+        return produtorepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("produto não cadastrado no sistema"));
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public Produto Salvar(@RequestBody Produto produto) {
-        return repository.save(produto);
+        return produtorepository.save(produto);
     }
 
     @PutMapping("/{id}")
     public Produto atualizar(@PathVariable Long id, @RequestBody Produto produto) {
         produto.setId(id);
-        return repository.save(produto);
+        return produtorepository.save(produto);
     }
 
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable Long id) {
-        repository.deleteById(id);
+        produtorepository.deleteById(id);
     }
 }
