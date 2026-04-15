@@ -27,6 +27,7 @@ public class Produto{
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
+
     public Long getId() {
         return id;
     }
