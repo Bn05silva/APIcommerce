@@ -5,9 +5,9 @@ import br.com.bruno.APIcommerce.Model.Produto;
 import br.com.bruno.APIcommerce.Repository.CategoriaRepository;
 import br.com.bruno.APIcommerce.Repository.ProdutoRepository;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/categorias")

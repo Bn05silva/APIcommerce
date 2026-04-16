@@ -1,8 +1,8 @@
 package br.com.bruno.APIcommerce.Model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+
 
 @Entity
 public class Usuario {

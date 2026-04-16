@@ -1,7 +1,6 @@
 package br.com.bruno.APIcommerce.Model;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 

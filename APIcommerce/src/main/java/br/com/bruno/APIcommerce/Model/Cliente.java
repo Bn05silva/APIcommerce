@@ -1,9 +1,9 @@
 package br.com.bruno.APIcommerce.Model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
+
 
 @Entity
 public class Cliente {
@@ -17,6 +17,9 @@ public class Cliente {
     private String fotoUrl;
     private LocalDate dataNascimento;
     private String cpf;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<Cartao> cartoes;
 
     public Long getId() {
         return id;
@@ -58,5 +61,12 @@ public class Cliente {
         this.cpf = cpf;
     }
 
+    public List<Cartao> getCartoes() {
+        return cartoes;
+    }
+
+    public void setCartoes(List<Cartao> cartoes) {
+        this.cartoes = cartoes;
+    }
 
 }
