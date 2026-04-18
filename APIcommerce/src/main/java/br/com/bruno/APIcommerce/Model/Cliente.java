@@ -21,6 +21,9 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Cartao> cartoes;
 
+    @OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private Endereco endereco;
+
     public Long getId() {
         return id;
     }
@@ -67,6 +70,14 @@ public class Cliente {
 
     public void setCartoes(List<Cartao> cartoes) {
         this.cartoes = cartoes;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco (Endereco endereco) {
+        this.endereco = endereco;
     }
 
 }
