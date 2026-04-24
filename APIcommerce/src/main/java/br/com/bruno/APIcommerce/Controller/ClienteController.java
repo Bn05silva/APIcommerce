@@ -3,10 +3,14 @@ package br.com.bruno.APIcommerce.Controller;
 import br.com.bruno.APIcommerce.Model.Cartao;
 import br.com.bruno.APIcommerce.Model.Cliente;
 import br.com.bruno.APIcommerce.Model.Endereco;
+import br.com.bruno.APIcommerce.Model.Pedido;
 import br.com.bruno.APIcommerce.Repository.CartaoRepository;
 import br.com.bruno.APIcommerce.Repository.ClienteRepository;
 import br.com.bruno.APIcommerce.Repository.EnderecoRepository;
+import br.com.bruno.APIcommerce.Repository.PedidoRepository;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -17,11 +21,13 @@ public class ClienteController {
     private final ClienteRepository clienterepository;
     private final CartaoRepository cartaorepository;
     private final EnderecoRepository enderecoRepository;
+    private final PedidoRepository pedidorepository;
 
-    public ClienteController(ClienteRepository clienterepository, CartaoRepository cartaorepository, EnderecoRepository enderecoRepository) {
+    public ClienteController(ClienteRepository clienterepository, CartaoRepository cartaorepository, EnderecoRepository enderecoRepository, PedidoRepository pedidorepository) {
         this.clienterepository = clienterepository;
         this.cartaorepository = cartaorepository;
         this.enderecoRepository = enderecoRepository;
+        this.pedidorepository = pedidorepository;
     }
 
 
@@ -42,6 +48,31 @@ public class ClienteController {
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado para esse endereco"));
 
         return cliente.getEndereco();
+    }
+
+    @GetMapping("{id}/pedidos")
+    public List<Pedido> listarPedidosPeriodoTempo(
+            @PathVariable Long id,
+            @RequestParam (required = false) LocalDate datainicio,
+            @RequestParam (required = false) LocalDate datafinal ) {
+
+        Cliente cliente = clienterepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não existe"));
+
+        if (datainicio == null && datafinal == null) {
+            return cliente.getPedidos();
+        }
+
+        if (datainicio != null && datafinal == null) {
+            return pedidorepository.findByClienteIdAndDataCadastroAfter(id, datainicio);
+        }
+
+        if (datainicio == null && datafinal != null) {
+            return pedidorepository.findByClienteIdAndDataCadastroBefore(id, datafinal);
+        }
+
+        return pedidorepository.findByClienteIdAndDataCadastroBetween(id, datainicio, datafinal);
+
     }
 
 

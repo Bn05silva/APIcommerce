@@ -24,6 +24,9 @@ public class Cliente {
     @OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
     private Endereco endereco;
 
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<Pedido> pedidos;
+
     public Long getId() {
         return id;
     }
@@ -78,6 +81,14 @@ public class Cliente {
 
     public void setEndereco (Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 
 }

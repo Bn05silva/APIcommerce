@@ -64,8 +64,16 @@ public class Produto{
         return dataCadastro;
     }
 
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
     public LocalDateTime getdataUltimaAtualizacao() {
         return dataUltimaAtualizacao;
+    }
+
+    public void setDataUltimaAtualizacao(LocalDateTime dataUltimaAtualizacao) {
+        this.dataUltimaAtualizacao = dataUltimaAtualizacao;
     }
 
     public BigDecimal getvalorUnitario() {

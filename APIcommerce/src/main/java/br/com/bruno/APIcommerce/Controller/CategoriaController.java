@@ -29,7 +29,7 @@ public class CategoriaController {
     @GetMapping("/{id}")
     public Categoria buscarPorId(@PathVariable Long id) {
         return categoriarepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("caregoria não encontradaaaa"));
+                .orElseThrow(() -> new RuntimeException("categoria não encontradaaaa"));
     }
 
     @GetMapping("/{id}/produtos")
