@@ -21,18 +21,23 @@ public class CategoriaController {
         this.produtorepository = produtorepository;
     }
 
-    @GetMapping
-    public List<Categoria> listar() {
+    @GetMapping(produces = "application/json")
+    public Object listarOuBuscarPorNome(@RequestParam(required = false) String nome) {
+        if (nome != null) {
+            return categoriarepository.findByNome(nome)
+                    .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+        }
+
         return categoriarepository.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = "application/json")
     public Categoria buscarPorId(@PathVariable Long id) {
         return categoriarepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("categoria não encontradaaaa"));
     }
 
-    @GetMapping("/{id}/produtos")
+    @GetMapping(value = "/{id}/produtos", produces = "application/json")
     public List<Produto> listarProdutosPorCategoriaNomePreco(
             @PathVariable Long id,
             @RequestParam (required = false) String nome,
@@ -54,14 +59,11 @@ public class CategoriaController {
             return produtorepository.findByCategoriaAndValorUnitarioBetween(categoria, valorMinimo, valorMaximo);
         }
 
+        if (nome != null && valorMaximo != null && valorMinimo != null) {
+            return produtorepository.findByCategoriaAndNomeContainingAndValorUnitarioBetween(categoria, nome, valorMinimo, valorMaximo);
+        }
+
         throw new UnsupportedOperationException("Filtro indisponivel");
-
-    }
-
-    @GetMapping("/nome")
-    public Categoria buscarPorNome(@RequestParam String nome) {
-        return categoriarepository.findByNome(nome)
-                .orElseThrow(() -> new RuntimeException("nome não encontrado"));
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
@@ -69,7 +71,7 @@ public class CategoriaController {
         return categoriarepository.save(categoria);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
     public Categoria atualizar(@PathVariable Long id, @RequestBody Categoria categoria) {
         categoria.setId(id);
         return categoriarepository.save(categoria);
@@ -78,5 +80,6 @@ public class CategoriaController {
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable Long id) {
         categoriarepository.deleteById(id);
+        /* ao configurar DTOs colocar mensagem de erro: "Não é possível excluir a categoria porque existem produtos vinculados"*/
     }
 }

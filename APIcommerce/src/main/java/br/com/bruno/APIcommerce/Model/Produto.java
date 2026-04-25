@@ -44,23 +44,23 @@ public class Produto{
         this.nome = nome;
     }
 
-    public String getdescricao() {
+    public String getDescricao() {
         return descricao;
     }
 
-    public void setdescricao(String descricao) {
+    public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
-    public String getfotoUrl() {
+    public String getFotoUrl() {
         return fotoUrl;
     }
 
-    public void setfotoUrl(String fotoUrl) {
+    public void setFotoUrl(String fotoUrl) {
         this.fotoUrl = fotoUrl;
     }
 
-    public LocalDateTime getdataCadastro() {
+    public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
 
@@ -68,7 +68,7 @@ public class Produto{
         this.dataCadastro = dataCadastro;
     }
 
-    public LocalDateTime getdataUltimaAtualizacao() {
+    public LocalDateTime getDataUltimaAtualizacao() {
         return dataUltimaAtualizacao;
     }
 
@@ -76,7 +76,7 @@ public class Produto{
         this.dataUltimaAtualizacao = dataUltimaAtualizacao;
     }
 
-    public BigDecimal getvalorUnitario() {
+    public BigDecimal getValorUnitario() {
         return valorUnitario;
     }
 

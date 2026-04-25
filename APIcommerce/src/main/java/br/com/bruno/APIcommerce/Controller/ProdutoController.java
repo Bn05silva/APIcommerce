@@ -1,6 +1,8 @@
 package br.com.bruno.APIcommerce.Controller;
 
+import br.com.bruno.APIcommerce.Model.Categoria;
 import br.com.bruno.APIcommerce.Model.Produto;
+import br.com.bruno.APIcommerce.Repository.CategoriaRepository;
 import br.com.bruno.APIcommerce.Repository.ProdutoRepository;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
@@ -12,9 +14,11 @@ import java.util.List;
 
 public class ProdutoController {
     private final ProdutoRepository produtorepository;
+    private final CategoriaRepository categoriarepository;
 
-    public ProdutoController(ProdutoRepository produtorepository) {
+    public ProdutoController(ProdutoRepository produtorepository, CategoriaRepository categoriarepository) {
         this.produtorepository = produtorepository;
+        this.categoriarepository = categoriarepository;
     }
 
     @GetMapping
@@ -46,6 +50,9 @@ public class ProdutoController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public Produto Salvar(@RequestBody Produto produto) {
+        Categoria categoria = categoriarepository.findById(produto.getCategoria().getId())
+                .orElseThrow(() -> new RuntimeException("categoria não encontrada"));
+        produto.setCategoria(categoria);
         return produtorepository.save(produto);
     }
 
