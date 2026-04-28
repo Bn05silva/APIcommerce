@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class TipoCartaoController {
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public TipoCartao[] listarTipos() {
         return TipoCartao.values();
     }

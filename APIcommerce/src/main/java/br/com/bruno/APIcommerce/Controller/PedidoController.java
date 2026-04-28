@@ -16,12 +16,12 @@ public class PedidoController {
         this.pedidoRepository = pedidoRepository;
     }
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public List<Pedido> listar() {
         return pedidoRepository.findAll();
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public Pedido cadastrarPedido(@RequestBody Pedido pedido) {
         return pedidoRepository.save(pedido);
     }

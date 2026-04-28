@@ -22,22 +22,23 @@ public class EstadoController {
         this.cidaderepository = cidaderepository;
     }
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public List<Estado> listar() {
         return estadorepository.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = "application/json")
     public Estado listarPorId(@PathVariable Long id) {
         return estadorepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Estado não cadastrado"));
     }
 
-    @GetMapping("{id}/cidades")
+    @GetMapping(value = "{id}/cidades", produces = "application/json")
     public List<Cidade> listarCidadePorId(@PathVariable Long id) {
         Estado estado = estadorepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("estado não existe"));
 
         return estado.getCidades();
     }
+
 }

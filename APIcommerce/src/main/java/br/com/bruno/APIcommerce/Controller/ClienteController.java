@@ -30,19 +30,18 @@ public class ClienteController {
         this.pedidorepository = pedidorepository;
     }
 
-
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public List<Cliente> listar() {
         return clienterepository.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = "application/json")
     public Cliente buscarPorId(@PathVariable Long id) {
         return clienterepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Não existe clientes com esse id"));
     }
 
-    @GetMapping("/{id}/endereco")
+    @GetMapping(value = "/{id}/endereco", produces = "application/json")
     public Endereco buscarEndereco(@PathVariable Long id) {
         Cliente cliente = clienterepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado para esse endereco"));
@@ -50,7 +49,7 @@ public class ClienteController {
         return cliente.getEndereco();
     }
 
-    @GetMapping("{id}/pedidos")
+    @GetMapping(value = "{id}/pedidos", produces = "application/json")
     public List<Pedido> listarPedidosPeriodoTempo(
             @PathVariable Long id,
             @RequestParam (required = false) LocalDate datainicio,
@@ -75,8 +74,7 @@ public class ClienteController {
 
     }
 
-
-    @GetMapping("/{id}/formas-de-pagamento")
+    @GetMapping(value = "/{id}/formas-de-pagamento", produces = "application/json")
     public List<Cartao> listarFormasDePagamento(@PathVariable Long id) {
         Cliente cliente = clienterepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("nenhuma forma de pagamento"));
@@ -89,7 +87,7 @@ public class ClienteController {
         return clienterepository.save(cliente);
     }
 
-    @PostMapping("/{id}/formas-de-pagamento")
+    @PostMapping(value = "/{id}/formas-de-pagamento", consumes = "application/json", produces = "application/json")
     public Cartao adicionarFormaDePagamento(@PathVariable Long id, @RequestBody Cartao cartao) {
         Cliente cliente = clienterepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("cliente não encontrado"));
@@ -98,13 +96,13 @@ public class ClienteController {
         return cartaorepository.save(cartao);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
     public Cliente atualizar(@PathVariable Long id, @RequestBody Cliente cliente) {
         cliente.setId(id);
         return clienterepository.save(cliente);
     }
 
-    @PutMapping("/{id}/endereco")
+    @PutMapping(value = "/{id}/endereco", consumes = "application/json", produces = "application/json")
     public Endereco atualizarEndereco(@PathVariable Long id, @RequestBody Endereco enderecoAtualizado) {
         Cliente cliente = clienterepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não existe"));
@@ -122,10 +120,9 @@ public class ClienteController {
         endereco.setBairro(enderecoAtualizado.getBairro());
 
         return enderecoRepository.save(endereco);
-
     }
 
-    @PutMapping("/{idcliente}/forma-de-pagamento/{idformapagamento}")
+    @PutMapping(value = "/{idcliente}/forma-de-pagamento/{idformapagamento}", consumes = "application/json", produces = "application/json")
     public Cartao atualizarCartaoFormaDePagamento(@PathVariable Long idcliente,@PathVariable Long idformapagamento, @RequestBody Cartao cartaoAtualizado) {
         Cliente cliente = clienterepository.findById(idcliente)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
@@ -144,12 +141,12 @@ public class ClienteController {
         return cartaorepository.save(cartao);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", produces = "application/json")
     public void deletar(@PathVariable Long id) {
         clienterepository.deleteById(id);
     }
 
-    @DeleteMapping("/{idcliente}/forma-de-pagamento/{idformapagamento}")
+    @DeleteMapping(value = "/{idcliente}/forma-de-pagamento/{idformapagamento}", produces = "application/json")
     public void deletarFormaDePagamento(@PathVariable Long idcliente, @PathVariable Long idformapagamento) {
         Cliente cliente = clienterepository.findById(idcliente)
                 .orElseThrow(() -> new RuntimeException("cliente não cadastrado"));
@@ -162,9 +159,6 @@ public class ClienteController {
         }
 
         cartaorepository.deleteById(idformapagamento);
-
     }
-
-
 
 }

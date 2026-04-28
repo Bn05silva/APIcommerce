@@ -15,30 +15,31 @@ public class UsuarioController {
         this.usuariorepository = usuariorepository;
     }
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public List<Usuario> listar() {
         return usuariorepository.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = "application/json")
     public Usuario buscarPorId(@PathVariable Long id) {
         return usuariorepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("erro ao identificar usuario"));
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json", produces = "application/json")
     public Usuario salvar(@RequestBody Usuario usuario) {
         return usuariorepository.save(usuario);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
     public Usuario atualizar(@PathVariable Long id, @RequestBody Usuario usuario) {
         usuario.setId(id);
                 return usuariorepository.save(usuario);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", produces = "application/json")
     public void deletar(@PathVariable Long id) {
         usuariorepository.deleteById(id);
     }
+
 }

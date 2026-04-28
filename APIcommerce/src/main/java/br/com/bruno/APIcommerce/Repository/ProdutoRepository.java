@@ -17,5 +17,5 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     List<Produto> findByNomeContaining(String nome);
     List<Produto> findByValorUnitarioBetween(BigDecimal valorMinimo, BigDecimal valorMaximo);
-
+    List<Produto> findByNomeContainingAndValorUnitarioBetween(String nome, BigDecimal valorMinimo, BigDecimal valorMaximo);
 }
