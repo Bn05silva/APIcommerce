@@ -1,0 +1,21 @@
+package br.com.bruno.APIcommerce.repository;
+
+import br.com.bruno.APIcommerce.model.Categoria;
+import br.com.bruno.APIcommerce.model.Produto;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.math.BigDecimal;
+import java.util.List;
+
+
+@Repository
+public interface ProdutoRepository extends JpaRepository<Produto, Long> {
+    List<Produto> findByCategoria(Categoria categoria);
+    List<Produto> findByCategoriaAndNomeContaining(Categoria Categoria, String nome);
+    List<Produto> findByCategoriaAndValorUnitarioBetween(Categoria categoria, BigDecimal valorMinimo, BigDecimal valorMaximo);
+    List<Produto> findByCategoriaAndNomeContainingAndValorUnitarioBetween(Categoria categoria, String nome, BigDecimal valorMinimo, BigDecimal valorMaximo);
+
+    List<Produto> findByNomeContaining(String nome);
+    List<Produto> findByValorUnitarioBetween(BigDecimal valorMinimo, BigDecimal valorMaximo);
+    List<Produto> findByNomeContainingAndValorUnitarioBetween(String nome, BigDecimal valorMinimo, BigDecimal valorMaximo);
+}

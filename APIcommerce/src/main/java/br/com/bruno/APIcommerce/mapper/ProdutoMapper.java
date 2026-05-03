@@ -1,9 +1,9 @@
 package br.com.bruno.APIcommerce.mapper;
 
-import br.com.bruno.APIcommerce.Model.Categoria;
-import br.com.bruno.APIcommerce.Model.Produto;
-import br.com.bruno.APIcommerce.dto.Produto.ProdutoCreateRequest;
-import br.com.bruno.APIcommerce.dto.Produto.ProdutoResponse;
+import br.com.bruno.APIcommerce.model.Categoria;
+import br.com.bruno.APIcommerce.model.Produto;
+import br.com.bruno.APIcommerce.dto.produto.ProdutoCreateRequest;
+import br.com.bruno.APIcommerce.dto.produto.ProdutoResponse;
 
 public class ProdutoMapper {
 
