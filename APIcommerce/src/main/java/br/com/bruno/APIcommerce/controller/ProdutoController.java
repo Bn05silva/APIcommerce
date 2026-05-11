@@ -1,6 +1,7 @@
 package br.com.bruno.APIcommerce.controller;
 
 import br.com.bruno.APIcommerce.exception.categoria.CategoriaNotFoundException;
+import br.com.bruno.APIcommerce.exception.produto.ProdutoNotFoundException;
 import br.com.bruno.APIcommerce.model.Categoria;
 import br.com.bruno.APIcommerce.model.Produto;
 import br.com.bruno.APIcommerce.repository.CategoriaRepository;
@@ -81,19 +82,39 @@ public class ProdutoController {
 
         ProdutoResponse response = ProdutoMapper.toResponse(produtoSalvo);
 
-        URI loaction = URI.create("/produtos/" + produtoSalvo.getId());
-        return ResponseEntity.created(loaction).body(response);
+        URI location = URI.create("/produtos/" + produtoSalvo.getId());
+        return ResponseEntity.created(location).body(response);
     }
 
     @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
-    public Produto atualizar(@PathVariable Long id, @RequestBody Produto produto) {
-        produto.setId(id);
-        return produtorepository.save(produto);
+    public ResponseEntity<ProdutoResponse> atualizar(@PathVariable Long id, @Valid @RequestBody ProdutoCreateRequest req) {
+        Categoria categoria = categoriarepository.findById(req.getCategoriaId())
+                .orElseThrow(() ->  new CategoriaNotFoundException("Categoria não encontrada"));
+
+        Produto produtoExistente = produtorepository.findById(id)
+                .orElseThrow(() -> new ProdutoNotFoundException("Produto não encontrado"));
+
+        produtoExistente.setNome(req.getNome());
+        produtoExistente.setDescricao(req.getDescricao());
+        produtoExistente.setFotoUrl(req.getFotoUrl());
+        produtoExistente.setValorUnitario(req.getValorUnitario());
+        produtoExistente.setCategoria(categoria);
+
+        Produto produtoAtualizado = produtorepository.save(produtoExistente);
+
+        ProdutoResponse response = ProdutoMapper.toResponse(produtoAtualizado);
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping(value = "/{id}", produces = "application/json")
-    public void deletar(@PathVariable Long id) {
-        produtorepository.deleteById(id);
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        Produto produtoExistente = produtorepository.findById(id)
+                .orElseThrow(() -> new ProdutoNotFoundException("Produto não encontrado"));
+
+        produtorepository.delete(produtoExistente);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
